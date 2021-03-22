@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>图片压缩</title>
+</head>
+<body>
+<input type="file" accept="image/" onchange="loadFile(event)" />
+<script type="text/javascript" src="script/compress.js"></script>
+<script type="text/javascript">
+  const loadFile = function(event) {
+    const reader = new FileReader()
+    reader.onload = async function() {
+      let compressDataUrl = await compress(
+        reader.result,
+        90,
+        'image/jpeg'
+      );
+      let compressedImageBlob = dataUrlToBlob(compressDataUrl)
+      uploadFile("https://httpbin.org/post", compressedImageBlob)
+    }
+    reader.readAsDataURL(event.target.files[0])
+  }
+</script>
+</body>
+</html>
